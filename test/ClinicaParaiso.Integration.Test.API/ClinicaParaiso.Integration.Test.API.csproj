@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClinicaParaiso.API\ClinicaParaiso.API.csproj" />
+    <ProjectReference Include="..\..\src\ClinicaParaiso.API\ClinicaParaiso.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
