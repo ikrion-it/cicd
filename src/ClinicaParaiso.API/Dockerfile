@@ -12,10 +12,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ClinicaParaiso.API/ClinicaParaiso.API.csproj", "ClinicaParaiso.API/"]
-COPY ["ClinicaParaiso.Application/ClinicaParaiso.Application.csproj", "ClinicaParaiso.Application/"]
-COPY ["ClinicaParaiso.Domain/ClinicaParaiso.Domain.csproj", "ClinicaParaiso.Domain/"]
-COPY ["ClinicaParaiso.Persistence/ClinicaParaiso.Persistence.csproj", "ClinicaParaiso.Persistence/"]
+COPY ["/src/ClinicaParaiso.API/ClinicaParaiso.API.csproj", "ClinicaParaiso.API/"]
+COPY ["/src/ClinicaParaiso.Application/ClinicaParaiso.Application.csproj", "ClinicaParaiso.Application/"]
+COPY ["/src/ClinicaParaiso.Domain/ClinicaParaiso.Domain.csproj", "ClinicaParaiso.Domain/"]
+COPY ["/src/ClinicaParaiso.Persistence/ClinicaParaiso.Persistence.csproj", "ClinicaParaiso.Persistence/"]
 RUN dotnet restore "./ClinicaParaiso.API/ClinicaParaiso.API.csproj"
 COPY . .
 WORKDIR "/src/ClinicaParaiso.API"
