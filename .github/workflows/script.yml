@@ -54,7 +54,7 @@ jobs:
           IMAGE: ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
         run: |
           # Usa o diretório raiz como contexto, mas aponta o Dockerfile para o caminho correto
-          docker build -f src/Dockerfile -t $IMAGE cicd/src
+          docker build -f src/Dockerfile -t $IMAGE /src
           #docker build -f src/ClinicaParaiso.API/Dockerfile --tag $IMAGE .
           docker push $IMAGE
 
