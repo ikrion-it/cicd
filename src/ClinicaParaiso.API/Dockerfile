@@ -21,12 +21,16 @@ RUN dotnet restore ClinicaParaiso.API/ClinicaParaiso.API.csproj
 COPY . .
 
 # BUILD & PUBLISH
+# Altera o diretório para onde o projeto .csproj da API está
 WORKDIR /src/ClinicaParaiso.API
-#RUN dotnet build ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet publish ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false --no-build
+
+# Publica os artefatos finais para /app/publish no CONTAINER.
+RUN dotnet publish ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # FINAL IMAGE
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+# Copia o resultado do 'publish' feito no estágio BUILD
+COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "ClinicaParaiso.API.dll"]
