@@ -45,7 +45,7 @@ jobs:
         
       # 4. Configurar Docker para usar o Artifact Registry
       - name: 4. Configurar Docker
-        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev
+        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
         
       # 5. Construir a Imagem Docker (CI)
       # ATENÇÃO: Adicionado -f para apontar para o Dockerfile na subpasta
