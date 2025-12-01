@@ -2,10 +2,21 @@ name: Pipeline
 on:
  push:
   branches: ["main"]
+
+env:
+  PROJECT_ID: 'augmented-clock-479700-g7'  # <-- Use o ID do seu projeto (visível na sua imagem)
+  GCP_REGION: 'us-central1'              # <-- Região do Artifact Registry e Cloud Run
+  SERVICE_NAME: 'api-ikrion-prod'       # <-- Nome do seu serviço no Cloud Run
+  REPO_NAME: 'api-repo-ikrion'          # <-- Nome do seu Artifact Registry
+  SA_EMAIL: 'sa-github-deployer@augmented-clock-479700-g7.iam.gserviceaccount.com' # <-- Email da sua Service Account
+
 jobs:
   build:
    name: Minha primeira pipeline  
    runs-on: ubuntu-latest
+   permissions:
+      contents: 'read'
+      id-token: 'write' # Necessário para autenticação WIF
    steps:     
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
@@ -16,6 +27,41 @@ jobs:
        #dotnet test ./test/JornadaMilhas.Unit.Test
       - name: Teste de integração 
         run: dotnet test ./test/ClinicaParaiso.Integration.Test.API
-       #dotnet publish ./src/JornadaMilhas.API
-      - name: Publicando a API
-        run: dotnet publish ./src/ClinicaParaiso.API
+      # 2. Autenticação Segura no GCP via Workload Identity Federation (WIF)
+      # Esta ação assume a sua Service Account (SA) usando o token OIDC do GitHub.
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          # O provedor WIF completo que configuramos nas Etapas 1 e 2.
+          # O formato é: projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID
+          # Você pode encontrar este valor na página de detalhes da sua Workload Identity Pool.
+          # ATENÇÃO: Substitua o 'PROJECT_NUMBER' pelo seu, se for diferente de 'PROJECT_ID'
+          workload_identity_provider: 'projects/714305528196/locations/global/workloadIdentityPools/github-pool-dev/providers/github-provider'
+          service_account: ${{ env.SA_EMAIL }}
+          
+      # 3. Configurar o SDK do gcloud (CLI)
+      - name: 3. Configurar gcloud
+        uses: 'google-github-actions/setup-gcloud@v2'
+        
+      # 4. Configurar Docker para usar o Artifact Registry
+      - name: 4. Configurar Docker
+        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev
+        
+      # 5. Construir a Imagem Docker (CI)
+      # A tag usa o prefixo do Artifact Registry + nome do repositório + versão única (commit SHA)
+      - name: 5. Construir e Taggear Imagem
+        env:
+          IMAGE: ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+        run: |
+          docker build --tag $IMAGE .
+          docker push $IMAGE
+
+      # 6. Implantar no Cloud Run (CD)
+      - name: 6. Implantar no Cloud Run
+        uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.GCP_REGION }}
+          image: ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          # Exemplo de flags opcionais (ajuste conforme sua necessidade)
+          # flags: '--platform managed --allow-unauthenticated'
