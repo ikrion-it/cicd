@@ -24,7 +24,7 @@ jobs:
           dotnet-version: 8.0.x
       - name: Checkout do código
         uses: actions/checkout@v2      
-       #dotnet test ./test/JornadaMilhas.Unit.Test 
+       #dotnet test ./test/JornadaMilhas.Unit.Test
       # - name: Teste de integração 
       #   run: dotnet test ./test/ClinicaParaiso.Integration.Test.API
       # 2. Autenticação Segura no GCP via Workload Identity Federation (WIF)
