@@ -48,12 +48,13 @@ jobs:
         run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev
         
       # 5. Construir a Imagem Docker (CI)
-      # A tag usa o prefixo do Artifact Registry + nome do repositório + versão única (commit SHA)
+      # ATENÇÃO: Adicionado -f para apontar para o Dockerfile na subpasta
       - name: 5. Construir e Taggear Imagem
         env:
           IMAGE: ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
         run: |
-          docker build --tag $IMAGE .
+          # Usa o diretório raiz como contexto, mas aponta o Dockerfile para o caminho correto
+          docker build -f src/ClinicaParaiso.API/Dockerfile --tag $IMAGE .
           docker push $IMAGE
 
       # 6. Implantar no Cloud Run (CD)
