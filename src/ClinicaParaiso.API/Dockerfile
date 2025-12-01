@@ -22,10 +22,10 @@ COPY . .
 
 # BUILD & PUBLISH
 # Altera o diretório para onde o projeto .csproj da API está
-WORKDIR /src/ClinicaParaiso.API
+WORKDIR /src
 
 # Publica os artefatos finais para /app/publish no CONTAINER.
-RUN dotnet publish ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish src/ClinicaParaiso.API/ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/publish
 
 # FINAL IMAGE
 FROM base AS final
