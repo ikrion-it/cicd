@@ -25,7 +25,7 @@ COPY . .
 WORKDIR /src/ClinicaParaiso.API
 
 # Publica os artefatos finais para /app/publish no CONTAINER.
-RUN dotnet publish ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish ClinicaParaiso.API.csproj -c $BUILD_CONFIGURATION -o /app/publish
 
 # FINAL IMAGE
 FROM base AS final
