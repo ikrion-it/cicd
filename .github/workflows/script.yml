@@ -6,9 +6,9 @@ on:
 env:
   PROJECT_ID: 'augmented-clock-479700-g7'  # <-- Use o ID do seu projeto (visível na sua imagem)
   GCP_REGION: 'us-central1'              # <-- Região do Artifact Registry e Cloud Run
-  SERVICE_NAME: 'api-ikrion-prod'       # <-- Nome do seu serviço no Cloud Run
+  SERVICE_NAME: 'testeapi'       # <-- Nome do seu serviço no Cloud Run
   REPO_NAME: 'api-repo-ikrion'          # <-- Nome do seu Artifact Registry
-  SA_EMAIL: 'sa-github-deployer@augmented-clock-479700-g7.iam.gserviceaccount.com' # <-- Email da sua Service Account
+  SA_EMAIL: 'github-deployer@augmented-clock-479700-g7.iam.gserviceaccount.com'
 
 jobs:
   build:
