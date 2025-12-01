@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<ClinicaParaisoContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ClinicaParaisoConnection"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ClinicaParaisoConnectionProduction"))
 );
 
 builder.Services.AddAutoMapper(cfg =>
