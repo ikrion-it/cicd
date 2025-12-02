@@ -6,7 +6,6 @@ using ClinicaParaiso.Persistence.Concreta;
 using ClinicaParaiso.Persistence.Data;
 using ClinicaParaiso.Persistence.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

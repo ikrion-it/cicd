@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
  
-# COPIA OS .CSPROJ PRIMEIRO (CAMINHOS CORRETOS)
+# COPIA OS .CSPROJ PRIMEIRO
 COPY src/ClinicaParaiso.API/ClinicaParaiso.API.csproj ClinicaParaiso.API/
 COPY src/ClinicaParaiso.Application/ClinicaParaiso.Application.csproj ClinicaParaiso.Application/
 COPY src/ClinicaParaiso.Domain/ClinicaParaiso.Domain.csproj ClinicaParaiso.Domain/
