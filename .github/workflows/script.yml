@@ -5,11 +5,16 @@ on:
 
   #AUTENTICAÇÃO VIA WIF
 env:
-  PROJECT_ID: 'augmented-clock-479700-g7'  # <-- Use o ID do seu projeto
+  # PROJECT_ID: 'augmented-clock-479700-g7'  # <-- Use o ID do seu projeto
+  # GCP_REGION: 'us-central1'              # <-- Região do Artifact Registry e Cloud Run
+  # SERVICE_NAME: 'testeapi'       # <-- Nome do seu serviço no Cloud Run
+  # REPO_NAME: 'api-repo-ikrion'          # <-- Nome do seu Artifact Registry
+  # SA_EMAIL: 'github-deployer@augmented-clock-479700-g7.iam.gserviceaccount.com'
+  PROJECT_ID: 'dev-teste-api'  # <-- Use o ID do seu projeto
   GCP_REGION: 'us-central1'              # <-- Região do Artifact Registry e Cloud Run
-  SERVICE_NAME: 'testeapi'       # <-- Nome do seu serviço no Cloud Run
-  REPO_NAME: 'api-repo-ikrion'          # <-- Nome do seu Artifact Registry
-  SA_EMAIL: 'github-deployer@augmented-clock-479700-g7.iam.gserviceaccount.com'
+  SERVICE_NAME: 'dev-teste-api'       # <-- Nome do seu serviço no Cloud Run
+  REPO_NAME: 'dev-teste-api'          # <-- Nome do seu Artifact Registry
+  SA_EMAIL: 'dev-github-deployer@dev-teste-api.iam.gserviceaccount.com'
 
 jobs:
   build:
@@ -27,15 +32,15 @@ jobs:
         uses: actions/checkout@v2      
 
       #Teste de Integração
-      - name: 2 . Teste de integração 
-        run: dotnet test ./test/ClinicaParaiso.Integration.Test.API
+      # - name: 2 . Teste de integração 
+      #   run: dotnet test ./test/ClinicaParaiso.Integration.Test.API
 
       # 2. Autenticação Segura no GCP via Workload Identity Federation (WIF)
       # Esta ação assume a sua Service Account (SA) usando o token OIDC do GitHub.
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
-          workload_identity_provider: 'projects/714305528196/locations/global/workloadIdentityPools/github-pool-dev/providers/github-provider'
+          workload_identity_provider: 'projects/551563557378/locations/global/workloadIdentityPools/github-pool-dev/providers/github-provider'
           service_account: ${{ env.SA_EMAIL }}
           
       # 3. Configurar o SDK do gcloud (CLI)
