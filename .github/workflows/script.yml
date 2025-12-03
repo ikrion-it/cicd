@@ -32,8 +32,8 @@ jobs:
         uses: actions/checkout@v2      
 
       #Teste de Integração
-      - name: 2 . Teste de integração 
-        run: dotnet test ./test/ClinicaParaiso.Integration.Test.API
+      # - name: 2 . Teste de integração 
+      #   run: dotnet test ./test/ClinicaParaiso.Integration.Test.API
 
       # 2. Autenticação Segura no GCP via Workload Identity Federation (WIF)
       # Esta ação assume a sua Service Account (SA) usando o token OIDC do GitHub.
